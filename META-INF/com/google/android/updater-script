@@ -1,0 +1,26 @@
+show_progress(0.1, 0);
+format("MTD", "system");
+mount("MTD", "system", "/system");
+package_extract_dir("system", "/system");
+symlink("dumpstate", "/system/bin/dumpcrash");
+set_perm_recursive(0, 0, 0755, 0644, "/system");
+set_perm_recursive(0, 2000, 0755, 0755, "/system/bin");
+set_perm(0, 3003, 02750, "/system/bin/netcfg");
+set_perm(0, 3004, 02755, "/system/bin/ping");
+set_perm(0, 2000, 06750, "/system/bin/run-as");
+set_perm_recursive(1002, 1002, 0755, 0440, "/system/etc/bluez");
+set_perm(0, 0, 0755, "/system/etc/bluez");
+set_perm(1002, 1002, 0440, "/system/etc/dbus.conf");
+set_perm(1014, 2000, 0550, "/system/etc/dhcpcd/dhcpcd-run-hooks");
+set_perm(0, 2000, 0550, "/system/etc/init.goldfish.sh");
+set_perm(0, 0, 06755, "/system/bin/su");
+symlink("/system/bin/su", "/system/xbin/su");
+set_perm_recursive(0, 0, 0755, 0555, "/system/etc/ppp");
+set_perm_recursive(0, 2000, 0755, 0755, "/system/xbin");
+show_progress(0.1, 10);
+show_progress(0.2, 0);
+assert(package_extract_file("boot.img", "/tmp/boot.img"),
+       write_raw_image("/tmp/boot.img", "boot"),
+       delete("/tmp/boot.img"));
+show_progress(0.2, 10);
+unmount("/system");
